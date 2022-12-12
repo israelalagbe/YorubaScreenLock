@@ -3,16 +3,42 @@ package com.wavestech.yorubalock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.KeyguardManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
-public class LockScreenActivity extends AppCompatActivity {
+public class LockScreenActivity extends AppCompatActivity  implements
+        LockscreenUtils.OnLockStatusChangedListener {
 
     private LockscreenUtils mLockscreenUtils;
 
+    // Handle events of calls and unlock screen if necessary
+    private class StateListener extends PhoneStateListener {
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+
+            super.onCallStateChanged(state, incomingNumber);
+            switch (state) {
+                case TelephonyManager.CALL_STATE_RINGING:
+                    unlockHomeButton();
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mLockscreenUtils = new LockscreenUtils();
         this.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
         this.getWindow().addFlags(
@@ -42,7 +68,7 @@ public class LockScreenActivity extends AppCompatActivity {
                 lockHomeButton();
 
                 // start service for observing intents
-                startService(new Intent(this, LockscreenService.class));
+                startService(new Intent(this, LockScreenService.class));
 
                 // listen the events get fired during the call
                 StateListener phoneStateListener = new StateListener();
@@ -50,17 +76,63 @@ public class LockScreenActivity extends AppCompatActivity {
                 telephonyManager.listen(phoneStateListener,
                         PhoneStateListener.LISTEN_CALL_STATE);
 
-                initializeListeners();
+//                initializeListeners();
 
             } catch (Exception e) {
-                Log.e(CameraActivity.TAG, e.getMessage());
+                Log.e(MainActivity.TAG, e.getMessage());
             }
 
         }
     }
 
+    // Don't finish Activity on Back press
+    @Override
+    public void onBackPressed() {
+        return;
+    }
+
+    // Handle button clicks
+    @Override
+    public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+                || (keyCode == KeyEvent.KEYCODE_POWER)
+                || (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+                || (keyCode == KeyEvent.KEYCODE_CAMERA)) {
+            return true;
+        }
+        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
+            Toast.makeText(getApplicationContext(),"Home  button pressed",Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        return false;
+
+    }
+
+    // handle the key press events here itself
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP
+                || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)
+                || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {
+            return false;
+        }
+        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {
+            Toast.makeText(getApplicationContext(),"Home  button pressed",Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        //Let the number keys work for the password text input
+        if(event.getKeyCode() >= KeyEvent.KEYCODE_1 && event.getKeyCode() <= KeyEvent.KEYCODE_9)
+        {
+            return super.dispatchKeyEvent(event);
+        }
+        return false;
+    }
+
+
+
     public void unlock(View v) {
-//        finish();
+        unlockDevice();
     }
 
     // Simply unlock device when home button is successfully unlocked
@@ -99,7 +171,7 @@ public class LockScreenActivity extends AppCompatActivity {
 
     // Lock home button
     public void lockHomeButton() {
-        mLockscreenUtils.lock(LockScreen.this);
+        mLockscreenUtils.lock(this);
     }
 
     // Unlock home button and wait for its callback
