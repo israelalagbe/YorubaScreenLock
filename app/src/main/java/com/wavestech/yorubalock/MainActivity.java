@@ -13,6 +13,8 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,12 +22,33 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static String TAG = "YorLog";
+    private Switch enableLockSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        enableLockSwitch=findViewById(R.id.enableLockSwitch);
+
+        enableLockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    launchPinCodeActivity();
+                }
+                else{
+
+                    stopScreenLock();
+                }
+            }
+        });
         Log.v(MainActivity.TAG, "Main activity started");
+    }
+
+    private void launchPinCodeActivity(){
+        Intent intent=new Intent(MainActivity.this,PinCode.class);
+        startActivity(intent);
     }
 
     public void onClick(View v) {

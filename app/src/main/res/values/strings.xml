@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Yoruba Lock</string>
+    <string name="app_name">Yorùbá Lock</string>
+    <string name="pin_code_activity_name">Pin Koòdù</string>
+
     <style name="OverlayDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
