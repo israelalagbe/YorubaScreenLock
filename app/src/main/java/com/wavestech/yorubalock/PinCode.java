@@ -48,7 +48,8 @@ public class PinCode extends AppCompatActivity {
         this.initKeyboard();
 
         pinCodeInput.setOnFocusChangeListener((view, hasFocus) -> {
-            hideKeyboard(view);
+            findViewById(R.id.keyboard).setVisibility(hasFocus ? View.VISIBLE : View.INVISIBLE);
+            hideNativeKeyboard(view);
 
             Log.v(MainActivity.TAG, "Focus gained");
         });
@@ -92,7 +93,7 @@ public class PinCode extends AppCompatActivity {
         keyboard.setEditText(this.pinCodeInput);
     }
 
-    public void hideKeyboard(View view) {
+    public void hideNativeKeyboard(View view) {
         Log.v(MainActivity.TAG, "Hide Keyboard called");
         Context context = view.getContext();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -120,14 +121,16 @@ public class PinCode extends AppCompatActivity {
         }
     }
     private void showInfoDialogForDefaultLauncher() {
+        Context context = this;
         new AlertDialog.Builder(this)
                 .setTitle("Default Launcher")
-                .setMessage("You will need to change your default launcher to \"Yoruba Lock\" to complete the setup. Click OK to continue.")
+                .setMessage("Iwọ yoo nilo lati yi Default Launcher rẹ pada si \"Yorùbá Lock\" lati pari iṣeto naa. Se ki n Tèsíwájú?")
                 .setCancelable(false)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Tèsíwájú", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        resetPreferredLauncherAndOpenChooser(getApplicationContext());
+                        resetPreferredLauncherAndOpenChooser(context);
+//                        finish();
                     }
                 }).show();
     }
@@ -137,12 +140,14 @@ public class PinCode extends AppCompatActivity {
         ComponentName componentName = new ComponentName(context, LockScreenActivity.class);
         packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 
+        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
+
         Intent selector = new Intent(Intent.ACTION_MAIN);
         selector.addCategory(Intent.CATEGORY_HOME);
         selector.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(selector);
 
-        packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
+
     }
 
     /**

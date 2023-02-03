@@ -1,6 +1,7 @@
 package com.wavestech.yorubalock;
 
 import android.content.Context;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -92,7 +93,9 @@ public class CustomKeyboard extends LinearLayout implements View.OnClickListener
                 prevText = this.editText.getText().toString();
             }
             String value = prevText + button.getText().toString();
-            inputConnection.commitText(value, 1);
+            this.editText.setText(value);
+            int position = this.editText.length();
+            Selection.setSelection(this.editText.getText(), position);
         }
     }
 
