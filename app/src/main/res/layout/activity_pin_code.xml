@@ -79,10 +79,9 @@
                 android:ems="10"
                 android:focusedByDefault="true"
                 android:importantForAutofill="no"
-                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
+            <!--                android:inputType="textPassword"-->
 
 
             <Button
