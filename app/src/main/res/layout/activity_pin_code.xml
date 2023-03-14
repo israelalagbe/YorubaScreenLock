@@ -93,7 +93,7 @@
                 android:layout_marginBottom="63dp"
                 android:background="@color/colorPrimary"
                 android:text="Tèsíwájú"
-                android:textColor="@color/white"
+                android:textColor="?colorOnPrimary"
                 android:visibility="invisible" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

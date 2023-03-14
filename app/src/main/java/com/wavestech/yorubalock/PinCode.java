@@ -33,6 +33,8 @@ public class PinCode extends AppCompatActivity {
     private Button btnContinue;
     private String pinCodeText="";
 
+    private boolean firstTimeLaunch = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,5 +172,19 @@ public class PinCode extends AppCompatActivity {
         final String myPackageName = getPackageName();
         Log.v(MainActivity.TAG, "Comparing current and home package: current - "+ currentHomePackage + " mine - " + myPackageName);
         return currentHomePackage == myPackageName;
+    }
+
+    /**
+     * GO BACK TO HOME SCREEN AFTER A MINIMIZE
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!firstTimeLaunch) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        firstTimeLaunch = false;
     }
 }

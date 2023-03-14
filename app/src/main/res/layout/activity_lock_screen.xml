@@ -19,7 +19,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></View>
+        app:layout_constraintVertical_bias="1.0"></View>
 
     <TextView
         android:id="@+id/timeTextView"
@@ -46,18 +46,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.266"
         android:textColor="#ffffff"
-        android:textSize="15sp"
+        android:textSize="18sp"
         />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/openUnlockBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="unlock"
-        android:text="Unlock"
+        android:text="🔐 Síí Fòònù"
         app:layout_constraintBottom_toBottomOf="@+id/opacityFilter2"
         app:layout_constraintEnd_toEndOf="@+id/opacityFilter2"
         app:layout_constraintStart_toStartOf="@+id/opacityFilter2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.777" />
+        app:layout_constraintVertical_bias="0.499"
+
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

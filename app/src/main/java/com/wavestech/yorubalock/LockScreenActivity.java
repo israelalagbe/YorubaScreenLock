@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -57,6 +62,7 @@ public class LockScreenActivity extends AppCompatActivity  implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_screen);
         displayCurrentTime();
+        initializeListeners();
         //Hide the action bar
         getSupportActionBar().hide();
 
@@ -83,7 +89,7 @@ public class LockScreenActivity extends AppCompatActivity  implements
                 telephonyManager.listen(phoneStateListener,
                         PhoneStateListener.LISTEN_CALL_STATE);
 
-//                initializeListeners();
+//
 
             } catch (Exception e) {
                 Log.e(MainActivity.TAG, e.getMessage());
@@ -196,8 +202,21 @@ public class LockScreenActivity extends AppCompatActivity  implements
 
         // format the current time in Yoruba
         String yorubaTime = currentTime.format(yorubaTimeFormatter);
+        String timeOfTheDay = "Unknown";
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-        timeTextView.setText(yorubaTime.replace("AM","Àárọ").replace("AM","Òosán"));
+        if (hour >= 5 && hour < 12) {
+            timeOfTheDay = "Àárọ̀";
+        } else if (hour >= 12 && hour < 17) {
+            timeOfTheDay = "Ọ̀ọ̀sán";
+        } else if (hour >= 17 && hour < 21) {
+            timeOfTheDay = "Ìrọ̀lẹ́";
+        } else {
+            timeOfTheDay = "Aalẹ́";
+        }
+
+        timeTextView.setText(yorubaTime.replace("AM",timeOfTheDay).replace("PM",timeOfTheDay));
 
         //Date formater
 
@@ -206,5 +225,32 @@ public class LockScreenActivity extends AppCompatActivity  implements
         TextView dateTextView = (TextView) findViewById(R.id.dateView);
 
         dateTextView.setText(converter.getDateString());
+    }
+
+
+    public void initializeListeners() {
+        Button button = findViewById(R.id.openUnlockBtn);
+
+        Runnable longPressRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // Handle long press after 10 seconds
+                stopService(new Intent(LockScreenActivity.this, LockScreenService.class));
+                unlockDevice();
+            }
+        };
+
+        Handler handler = new Handler();
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    handler.postDelayed(longPressRunnable, 6000); // Set a delay of 6 seconds
+                } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    handler.removeCallbacks(longPressRunnable); // Cancel the long press event if the button is released or cancelled
+                }
+                return false;
+            }
+        });
     }
 }

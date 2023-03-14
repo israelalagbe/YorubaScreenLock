@@ -25,14 +25,14 @@ public class Utils {
     }
 
     public static void setPassword(Activity activity, String key, String value) {
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences("Yorubalock", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
     public static String getPassword(Activity activity, String key) {
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences("Yorubalock", Context.MODE_PRIVATE);
         return sharedPref.getString(key, null);
     }
 
