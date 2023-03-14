@@ -11,7 +11,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
+import java.util.Locale;
 
 public class LockScreenActivity extends AppCompatActivity  implements
         LockscreenUtils.OnLockStatusChangedListener {
@@ -39,8 +47,7 @@ public class LockScreenActivity extends AppCompatActivity  implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mLockscreenUtils = new LockscreenUtils();
-        this.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
         this.getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
                         | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
@@ -49,7 +56,7 @@ public class LockScreenActivity extends AppCompatActivity  implements
         );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_screen);
-
+        displayCurrentTime();
         //Hide the action bar
         getSupportActionBar().hide();
 
@@ -177,5 +184,27 @@ public class LockScreenActivity extends AppCompatActivity  implements
     // Unlock home button and wait for its callback
     public void unlockHomeButton() {
         mLockscreenUtils.unlock();
+    }
+
+    public void displayCurrentTime() {
+        TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
+
+        LocalTime currentTime = LocalTime.now();
+//
+        // create a formatter for Yoruba time
+        DateTimeFormatter yorubaTimeFormatter = DateTimeFormatter.ofPattern("h:mm a", new Locale("yo", "NG"));
+
+        // format the current time in Yoruba
+        String yorubaTime = currentTime.format(yorubaTimeFormatter);
+
+        timeTextView.setText(yorubaTime.replace("AM","Àárọ").replace("AM","Òosán"));
+
+        //Date formater
+
+        YorubaDateConverter converter = new YorubaDateConverter();
+
+        TextView dateTextView = (TextView) findViewById(R.id.dateView);
+
+        dateTextView.setText(converter.getDateString());
     }
 }

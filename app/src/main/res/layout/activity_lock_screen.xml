@@ -4,17 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".LockScreenActivity">
 
+    <View
+        android:id="@+id/opacityFilter2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.9"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></View>
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/timeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You Screen is Locked"
+        android:layout_centerInParent="true"
+        android:text="00:00"
+        android:textColor="#ffffff"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.142" />
+
+    <TextView
+        android:id="@+id/dateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.266"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        />
 
     <Button
         android:id="@+id/button2"
@@ -22,6 +55,9 @@
         android:layout_height="wrap_content"
         android:onClick="unlock"
         android:text="Unlock"
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="485dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/opacityFilter2"
+        app:layout_constraintEnd_toEndOf="@+id/opacityFilter2"
+        app:layout_constraintStart_toStartOf="@+id/opacityFilter2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.777" />
 </androidx.constraintlayout.widget.ConstraintLayout>

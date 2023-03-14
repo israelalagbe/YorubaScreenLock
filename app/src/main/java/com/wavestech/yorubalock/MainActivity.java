@@ -31,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
         enableLockSwitch=findViewById(R.id.enableLockSwitch);
 
+        Toast toast = Toast.makeText(MainActivity.this, "This set password: " + Utils.getPassword(MainActivity.this, "password"), Toast.LENGTH_LONG);
+        toast.show();
+
+        //If password has already been set, check the switch
+        if(Utils.getPassword(MainActivity.this, "password") != null){
+            enableLockSwitch.setChecked(true);
+        }
+
         enableLockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -38,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     launchPinCodeActivity();
                 }
                 else{
-
+                    Utils.setPassword(MainActivity.this, "password", null);
                     stopScreenLock();
                 }
             }
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopScreenLock(){
-        stopService(new Intent(this, LockScreenService.class));
+        stopService(new Intent(MainActivity.this, LockScreenService.class));
     }
 
 }

@@ -60,6 +60,7 @@ public class PinCode extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 pinCodeText=charSequence.toString();
                 Log.v(MainActivity.TAG, "text input: " + pinCodeText);
+
                 if(pinCodeText.length()>=4){
                     btnContinue.setVisibility(View.VISIBLE);
                 }
@@ -73,7 +74,9 @@ public class PinCode extends AppCompatActivity {
             public void onClick(View view) {
                 Log.v(MainActivity.TAG, "starting lock screen");
                 startScreenLock();
-                Toast toast = Toast.makeText(PinCode.this, "Lock Screen service started", Toast.LENGTH_LONG);
+                Utils.setPassword(PinCode.this, "password", pinCodeText);
+                String password = Utils.getPassword(PinCode.this, "password");
+                Toast toast = Toast.makeText(PinCode.this, "Lock Screen service started, password has been set: " + password, Toast.LENGTH_LONG);
                 toast.show();
                 Log.v(MainActivity.TAG, "Lockscreen service");
             }
