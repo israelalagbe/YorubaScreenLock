@@ -230,13 +230,16 @@ public class LockScreenActivity extends AppCompatActivity  implements
 
     public void initializeListeners() {
         Button button = findViewById(R.id.openUnlockBtn);
-
+        /**
+         * If the unlock button is long pressed for more than 6 seconds, then the locker force quits
+         */
         Runnable longPressRunnable = new Runnable() {
             @Override
             public void run() {
                 // Handle long press after 10 seconds
                 stopService(new Intent(LockScreenActivity.this, LockScreenService.class));
-                unlockDevice();
+                unlockHomeButton();
+                PinCode.resetPreferredLauncherAndOpenChooser(getApplicationContext());
             }
         };
 
