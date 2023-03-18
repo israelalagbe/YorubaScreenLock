@@ -2,7 +2,10 @@ package com.wavestech.yorubalock;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +70,24 @@ public class Utils {
         if(str.length() == 0)
             return str;
         return str.substring(0, str.length() - chars);
+    }
+
+    public static String getDefaultActivity(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+
+// Create an intent for the home screen
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory(Intent.CATEGORY_HOME);
+
+// Get the default activity that handles the home screen intent
+        ResolveInfo defaultLauncher = packageManager.resolveActivity(homeIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+// Get the package name and class name of the default launcher activity
+        String packageName = defaultLauncher.activityInfo.packageName;
+        String className = defaultLauncher.activityInfo.name;
+//        Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+//        startActivity(intent);
+        return className;
     }
 
 }

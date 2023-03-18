@@ -31,8 +31,16 @@ public class MainActivity extends AppCompatActivity {
 
         enableLockSwitch=findViewById(R.id.enableLockSwitch);
 
-//        Toast toast = Toast.makeText(MainActivity.this, "This set password: " + Utils.getPassword(MainActivity.this, "password"), Toast.LENGTH_LONG);
-//        toast.show();
+        String phoneDefaultLauncher = Utils.getPassword(MainActivity.this, "OldDefaultLauncher");
+
+        if( phoneDefaultLauncher == null){
+            phoneDefaultLauncher = Utils.getDefaultActivity(this);
+            if(phoneDefaultLauncher.equals("com.wavestech.yorubalock")) {
+                return;
+            }
+            Utils.setPassword(MainActivity.this, "OldDefaultLauncher", phoneDefaultLauncher);
+        }
+
 
         //If password has already been set, check the switch
         if(Utils.getPassword(MainActivity.this, "password") != null){
@@ -63,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void stopScreenLock(){
         stopService(new Intent(MainActivity.this, LockScreenService.class));
-        PinCode.resetPreferredLauncherAndOpenChooser(getApplicationContext());
+        new SetDefaultLauncher(MainActivity.this).launchHomeOrClearDefaultsDialog();
     }
 
 }

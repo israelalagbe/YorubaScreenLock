@@ -3,7 +3,10 @@ package com.wavestech.yorubalock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.KeyguardManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.PhoneStateListener;
@@ -224,7 +227,33 @@ public class LockScreenActivity extends AppCompatActivity  implements
     //Simply unlock device by finishing the activity
     private void unlockDevice()
     {
+        String phoneDefaultLauncher = Utils.getPassword(this, "OldDefaultLauncher");
+        if(phoneDefaultLauncher == null) {
+            finish();
+            return;
+        }
+
+//        Intent intent = new Intent(phoneDefaultLauncher);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        if(intent !=null){
+//            startActivity(intent);
+//            return;
+//        }
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+        Intent intent = new Intent();
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        startActivity(intent);
         finish();
+
+//        String packageName = "com.sec.android.app.launcher"; // Replace with the package name of the app you want to launch
+//        String className = "ccom.sec.android.app.launcher.activities.LauncherActivity"; // Replace with the fully qualified class name of the activity you want to launch
+//
+//        Intent intent = new Intent(Intent.ACTION_MAIN);
+//        intent.setClassName(packageName, className);
+//        startActivity(intent);
     }
 
     // Lock home button
@@ -288,7 +317,7 @@ public class LockScreenActivity extends AppCompatActivity  implements
                 // Handle long press after 10 seconds
                 stopService(new Intent(LockScreenActivity.this, LockScreenService.class));
                 unlockHomeButton();
-                PinCode.resetPreferredLauncherAndOpenChooser(getApplicationContext());
+                new SetDefaultLauncher(LockScreenActivity.this).launchHomeOrClearDefaultsDialog();
             }
         };
 
@@ -305,4 +334,5 @@ public class LockScreenActivity extends AppCompatActivity  implements
             }
         });
     }
+
 }

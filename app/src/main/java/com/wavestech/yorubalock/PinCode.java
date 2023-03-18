@@ -114,7 +114,8 @@ public class PinCode extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startService(new Intent(PinCode.this, LockScreenService.class));
-                        resetPreferredLauncherAndOpenChooser(context);
+//                        resetPreferredLauncherAndOpenChooser(context);
+                        new SetDefaultLauncher(PinCode.this).launchHomeOrClearDefaultsDialog();
                     }
                 })
                 .show();
