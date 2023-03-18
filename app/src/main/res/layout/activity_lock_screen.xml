@@ -53,14 +53,107 @@
         android:id="@+id/openUnlockBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="unlock"
+        android:onClick="showPasscodeScreen"
         android:text="🔐 Sí Fóònù"
         app:layout_constraintBottom_toBottomOf="@+id/opacityFilter2"
         app:layout_constraintEnd_toEndOf="@+id/opacityFilter2"
         app:layout_constraintStart_toStartOf="@+id/opacityFilter2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499"
+        android:visibility="visible"
+        />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="42dp"
+        app:cardPreventCornerOverlap="false"
+        android:elevation="5dp"
+        app:cardCornerRadius="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.527"
+        android:visibility="gone"
+        >
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="228dp"
+                android:layout_height="52dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="66dp"
+                android:layout_marginEnd="23dp"
+                android:layout_marginRight="23dp"
+                android:layout_marginBottom="182dp"
+                android:paddingHorizontal="5dp"
+                android:text="Tẹ ọrọ igbaniwọle rẹ sii"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/passwordInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="130dp"
+                android:layout_marginBottom="125dp"
+                android:ems="10"
+                android:focusedByDefault="true"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:onClick="hideKeyboard"
+                />
+            <!--   -->
+
+
+            <Button
+                android:id="@+id/btnContinue2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="63dp"
+                android:background="@color/colorPrimary"
+                android:text="🔐 Sí Fóònù"
+                android:textColor="?colorOnPrimary"
+                android:onClick="unlock"
+                />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <com.wavestech.yorubalock.CustomKeyboard
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/opacityFilter2"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

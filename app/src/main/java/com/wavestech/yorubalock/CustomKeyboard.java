@@ -79,8 +79,10 @@ public class CustomKeyboard extends LinearLayout implements View.OnClickListener
             CharSequence selectedText = inputConnection.getSelectedText(0);
             if (TextUtils.isEmpty(selectedText)) {
                 // no selection, so delete previous character
-                inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DEL));
-                inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DEL));
+                String value = this.editText.getText().toString();
+                this.editText.setText(Utils.removeLastChar(value));
+                int position = this.editText.length();
+                Selection.setSelection(this.editText.getText(), position);
             } else {
                 // delete the selection
                 inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));

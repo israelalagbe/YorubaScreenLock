@@ -51,7 +51,7 @@ public class PinCode extends AppCompatActivity {
 
         pinCodeInput.setOnFocusChangeListener((view, hasFocus) -> {
             findViewById(R.id.keyboard).setVisibility(hasFocus ? View.VISIBLE : View.INVISIBLE);
-            hideNativeKeyboard(view);
+            Utils.hideNativeKeyboard(PinCode.this, view);
 
             Log.v(MainActivity.TAG, "Focus gained");
         });
@@ -96,26 +96,6 @@ public class PinCode extends AppCompatActivity {
         InputConnection ic = pinCodeInput.onCreateInputConnection(new EditorInfo());
         keyboard.setInputConnection(ic);
         keyboard.setEditText(this.pinCodeInput);
-    }
-
-    public void hideNativeKeyboard(View view) {
-        Log.v(MainActivity.TAG, "Hide Keyboard called");
-        Context context = view.getContext();
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        int milSec = 5; // Delay in seconds
-        Utils.delay(milSec, new Utils.DelayCallback() {
-            @Override
-            public void afterDelay() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.v(MainActivity.TAG, "Hide keyboard after delay");
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    }
-                });
-            }
-        });
     }
 
     private void startScreenLock(){
@@ -186,5 +166,10 @@ public class PinCode extends AppCompatActivity {
             startActivity(intent);
         }
         firstTimeLaunch = false;
+    }
+
+    public void hideKeyboard(View v) {
+        findViewById(R.id.keyboard).setVisibility(View.VISIBLE);
+        Utils.hideNativeKeyboard(PinCode.this, pinCodeInput);
     }
 }

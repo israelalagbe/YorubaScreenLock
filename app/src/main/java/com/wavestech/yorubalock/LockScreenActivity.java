@@ -8,13 +8,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +34,7 @@ public class LockScreenActivity extends AppCompatActivity  implements
         LockscreenUtils.OnLockStatusChangedListener {
 
     private LockscreenUtils mLockscreenUtils;
+    private EditText pinCodeInput;
 
     // Handle events of calls and unlock screen if necessary
     private class StateListener extends PhoneStateListener {
@@ -63,6 +68,7 @@ public class LockScreenActivity extends AppCompatActivity  implements
         setContentView(R.layout.activity_lock_screen);
         displayCurrentTime();
         initializeListeners();
+
         //Hide the action bar
         getSupportActionBar().hide();
 
@@ -142,7 +148,40 @@ public class LockScreenActivity extends AppCompatActivity  implements
         return false;
     }
 
+    public void showPasscodeScreen(View v) {
+        findViewById(R.id.openUnlockBtn).setVisibility(View.GONE);
+        findViewById(R.id.cardView).setVisibility(View.VISIBLE);
 
+
+        pinCodeInput.setOnFocusChangeListener((view, hasFocus) -> {
+
+            findViewById(R.id.keyboard).setVisibility(hasFocus ? View.VISIBLE : View.INVISIBLE);
+            Utils.hideNativeKeyboard(LockScreenActivity.this, view);
+
+            Log.v(MainActivity.TAG, "Focus gained");
+
+        });
+
+
+    }
+
+    public void hideKeyboard(View v) {
+        findViewById(R.id.keyboard).setVisibility(View.VISIBLE);
+        Utils.hideNativeKeyboard(LockScreenActivity.this, pinCodeInput);
+    }
+
+    private void initKeyboard() {
+        CustomKeyboard keyboard = (CustomKeyboard) findViewById(R.id.keyboard);
+
+        // prevent system keyboard from appearing when EditText is tapped
+        pinCodeInput.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        pinCodeInput.setTextIsSelectable(true);
+
+        // pass the InputConnection from the EditText to the keyboard
+        InputConnection ic = pinCodeInput.onCreateInputConnection(new EditorInfo());
+        keyboard.setInputConnection(ic);
+        keyboard.setEditText(pinCodeInput);
+    }
 
     public void unlock(View v) {
         unlockDevice();
@@ -230,6 +269,10 @@ public class LockScreenActivity extends AppCompatActivity  implements
 
     public void initializeListeners() {
         Button button = findViewById(R.id.openUnlockBtn);
+        pinCodeInput = findViewById(R.id.passwordInput);
+
+        initKeyboard();
+
         /**
          * If the unlock button is long pressed for more than 6 seconds, then the locker force quits
          */

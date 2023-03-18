@@ -67,7 +67,6 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:onClick="hideKeyboard"
                 android:id="@+id/pinCodeInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,8 +79,11 @@
                 android:focusedByDefault="true"
                 android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-            <!--                android:inputType="textPassword"-->
+                app:layout_constraintStart_toStartOf="parent"
+                android:inputType="textPassword"
+                android:onClick="hideKeyboard"
+                />
+            <!-- android:onClick="hideKeyboard" -->
 
 
             <Button
