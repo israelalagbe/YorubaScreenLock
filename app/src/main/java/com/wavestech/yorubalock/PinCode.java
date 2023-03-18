@@ -77,9 +77,9 @@ public class PinCode extends AppCompatActivity {
                 Log.v(MainActivity.TAG, "starting lock screen");
                 startScreenLock();
                 Utils.setPassword(PinCode.this, "password", pinCodeText);
-                String password = Utils.getPassword(PinCode.this, "password");
-                Toast toast = Toast.makeText(PinCode.this, "Lock Screen service started, password has been set: " + password, Toast.LENGTH_LONG);
-                toast.show();
+//                String password = Utils.getPassword(PinCode.this, "password");
+//                Toast toast = Toast.makeText(PinCode.this, "Lock Screen service started, password has been set: " + password, Toast.LENGTH_LONG);
+//                toast.show();
                 Log.v(MainActivity.TAG, "Lockscreen service");
             }
         });
@@ -119,7 +119,6 @@ public class PinCode extends AppCompatActivity {
     }
 
     private void startScreenLock(){
-        startService(new Intent(this, LockScreenService.class));
         //Check if this app is my default launcher
         if(!isMyAppLauncherDefault()){
             showInfoDialogForDefaultLauncher();
@@ -134,10 +133,11 @@ public class PinCode extends AppCompatActivity {
                 .setPositiveButton("Tèsíwájú", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        startService(new Intent(PinCode.this, LockScreenService.class));
                         resetPreferredLauncherAndOpenChooser(context);
-//                        finish();
                     }
-                }).show();
+                })
+                .show();
     }
 
     public static void resetPreferredLauncherAndOpenChooser(Context context) {

@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         enableLockSwitch=findViewById(R.id.enableLockSwitch);
 
-        Toast toast = Toast.makeText(MainActivity.this, "This set password: " + Utils.getPassword(MainActivity.this, "password"), Toast.LENGTH_LONG);
-        toast.show();
+//        Toast toast = Toast.makeText(MainActivity.this, "This set password: " + Utils.getPassword(MainActivity.this, "password"), Toast.LENGTH_LONG);
+//        toast.show();
 
         //If password has already been set, check the switch
         if(Utils.getPassword(MainActivity.this, "password") != null){
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopScreenLock(){
         stopService(new Intent(MainActivity.this, LockScreenService.class));
+        PinCode.resetPreferredLauncherAndOpenChooser(getApplicationContext());
     }
 
 }
