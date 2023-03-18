@@ -62,7 +62,7 @@
                 android:layout_marginRight="23dp"
                 android:layout_marginBottom="182dp"
                 android:paddingHorizontal="5dp"
-                android:text="Tẹ ọrọ igbaniwọle rẹ sii"
+                android:text="Tẹ ọrọ ìgbaniwọle rẹ sii"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 

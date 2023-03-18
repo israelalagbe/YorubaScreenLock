@@ -184,6 +184,12 @@ public class LockScreenActivity extends AppCompatActivity  implements
     }
 
     public void unlock(View v) {
+        String savedPassword = Utils.getPassword(this, "password");
+        if(!pinCodeInput.getText().toString().equals(savedPassword)){
+            Toast.makeText(this, "Ọ̀rọ̀ ìgbanìwọlé rẹ kò tọ́", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         unlockDevice();
     }
 

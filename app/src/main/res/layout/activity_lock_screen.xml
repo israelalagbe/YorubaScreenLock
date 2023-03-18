@@ -124,8 +124,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:onClick="hideKeyboard"
                 />
-            <!--   -->
-
 
             <Button
                 android:id="@+id/btnContinue2"
