@@ -31,8 +31,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.google.samples.apps.nowinandroid"
-        versionCode = 8
-        versionName = "0.1.2"
+        versionCode = 9
+        versionName = "2.5"
 
         // Custom test runner to set up Hilt dependency graph
         testInstrumentationRunner = "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
